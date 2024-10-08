@@ -1,7 +1,7 @@
 from . import (
     codes,
-    races,
-    sexes,
+    # races,
+    # sexes,
     users,
     assets,
     used_assets,
@@ -12,8 +12,8 @@ from . import (
 
 __all__ = [
     "codes",
-    "races",
-    "sexes",
+    # "races",
+    # "sexes",
     "users",
     "assets",
     "used_assets",
