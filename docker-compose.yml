@@ -4,7 +4,9 @@ services:
     build:
       context: .
     ports:
-      - 80:80
+      - 81:80
+    volumes:
+      - '.:/app'
 
   postgres:
     image: postgres:latest
