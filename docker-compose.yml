@@ -1,0 +1,23 @@
+services:
+  fast-api:
+    container_name: cc-backend
+    build:
+      context: .
+    ports:
+      - 80:80
+    volumes:
+      - '.:/app'
+
+  postgres:
+    image: postgres:latest
+    container_name: cc-database
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT}:5432"
+    volumes:
+      - './docker/postgres/data:/var/lib/postgresql/data'
+      - './docker/postgres/conf:/etc/postgresql'
+      - './database:/docker-entrypoint-initdb.d'

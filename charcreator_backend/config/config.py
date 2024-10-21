@@ -87,14 +87,14 @@ class Config:
 
         self.db = DbConfig(
             {
-                "host": "charcreator.ru",
+                "host": "cc-database",
                 "port": 5432,
-                "login": "charcreator_api",
-                "password": "PASSWORD",
-                "name": "charcreator",
+                "login": os.environ["POSTGRES_USER"],
+                "password": os.environ["POSTGRES_PASSWORD"],
+                "name": os.environ["POSTGRES_DB"],
             }
         )
-        self.bcrypt_salt: bytes = bcrypt.gensalt()
+        self.bcrypt_salt = bytes(bcrypt.gensalt(), encoding="utf-8")
         self.jwt = JwtConfig(
             {
                 "secret": base64.b64encode(os.urandom(32)),
