@@ -7,6 +7,9 @@ services:
       - 80:80
     volumes:
       - '.:/app'
+    depends_on:
+      postgres:
+        condition: service_healthy
 
   postgres:
     image: postgres:latest
@@ -17,6 +20,11 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     ports:
       - "${POSTGRES_PORT}:5432"
+    healthcheck:
+      test: pg_isready -h localhost -U ${POSTGRES_USER}
+      interval: 2s
+      timeout: 5s
+      retries: 15
     volumes:
       - './docker/postgres/data:/var/lib/postgresql/data'
       - './docker/postgres/conf:/etc/postgresql'
