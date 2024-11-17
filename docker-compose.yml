@@ -20,6 +20,10 @@ services:
     container_name: cc-database
     ports:
       - "${POSTGRES_PORT}:5432"
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     healthcheck:
       test: pg_isready -h localhost -U ${POSTGRES_USER}
       interval: 2s
