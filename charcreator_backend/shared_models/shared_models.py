@@ -57,6 +57,8 @@ class UserModel(pydantic.BaseModel):
     )
 
 
+
+
 class ExceptionModel(pydantic.BaseModel):
     """
     Модель исключения

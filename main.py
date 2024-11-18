@@ -93,6 +93,10 @@ async def init_modules():
         app, "/example", "example"
     )
 
+    await charcreator_backend.endpoints.used_assets.asset_init_submodule(
+        app, "/used_assets", "used_assets"
+    )
+
 
 security = HTTPBasic()
 

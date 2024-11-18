@@ -19,6 +19,7 @@ class FunctionsNamespace:
         self.connection = connection
         self.users: users.UserFunctions = users.UserFunctions(connection)
         self.codes: codes.CodeFunctions = codes.CodeFunctions(connection)
+        self.used_assets: used_assets.UsedAssetsFunctions = used_assets.UsedAssetsFunctions(connection)
         self.sessions: sessions.SessionsFunctions = sessions.SessionsFunctions(
             connection
         )
