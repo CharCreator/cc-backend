@@ -8,21 +8,19 @@ from .functions import (
     used_assets,
     saved_character_assets,
     saved_characters,
-    # races,
-    # sexes,
     sessions,
 )
-
 
 class FunctionsNamespace:
     def __init__(self, connection: asyncpg.connection.Connection):
         self.connection = connection
         self.users: users.UserFunctions = users.UserFunctions(connection)
         self.codes: codes.CodeFunctions = codes.CodeFunctions(connection)
-        self.used_assets: used_assets.UsedAssetsFunctions = used_assets.UsedAssetsFunctions(connection)
-        self.sessions: sessions.SessionsFunctions = sessions.SessionsFunctions(
-            connection
-        )
+        self.used_assets: used_assets.UsedAssetFunctions = used_assets.UsedAssetFunctions(connection)  # Исправлено имя класса
+        self.saved_character_assets: saved_character_assets.SavedCharacterAssetFunctions = saved_character_assets.SavedCharacterAssetFunctions(connection)
+        self.saved_characters: saved_characters.SavedCharacterFunctions = saved_characters.SavedCharacterFunctions(connection)
+        self.sessions: sessions.SessionsFunctions = sessions.SessionsFunctions(connection)
+
 
 
 class DBPool:

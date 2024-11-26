@@ -1,11 +1,13 @@
 from .used_assets import (
-    UsedAssetsFunctions,
-    UsedAsset,
+     UsedAssetFunctions,
+     UsedAssetNotFound,
+     UsedAsset,
 )
 
 
 __all__ = [
-    "UsedAssetsFunctions",
+    "UsedAssetFunctions",
+    "UsedAssetNotFound",
     "UsedAsset",
 
 ]

@@ -75,6 +75,18 @@ app = fastapi.FastAPI(
             "name": "Example module",
             "description": "Модуль-пример",
         },
+        {
+            "name": "Used Assets",
+            "description": "Модуль использованных ассетов",
+        },
+        {
+            "name": "Saved Characters",
+            "description": "Модуль сохраненные персонажей",
+        },
+        {
+            "name": "Saved Character Assets",
+            "description": "Модуль Saved Character Assets",
+        },
     ]
 )
 app.add_middleware(
@@ -95,6 +107,14 @@ async def init_modules():
 
     await charcreator_backend.endpoints.used_assets.asset_init_submodule(
         app, "/used_assets", "used_assets"
+    )
+
+    await charcreator_backend.endpoints.saved_characters.init_saved_characters_module(
+        app, "/saved_characters", "saved_characters"
+    )
+
+    await charcreator_backend.endpoints.saved_character_assets.saved_character_assets_init_submodule(
+        app, "/saved_character_assets", "saved_character_assets"
     )
 
 
