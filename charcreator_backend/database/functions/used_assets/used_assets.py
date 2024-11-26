@@ -56,6 +56,7 @@ class UsedAssetFunctions:
         :param properties: Additional properties as a dictionary
         :return: A newly created UsedAsset object
         """
+        print("loh")
         res = await self.conn.fetchrow(
             """
             INSERT INTO used_assets (user_id, asset_id, properties, created_at) 
@@ -63,7 +64,7 @@ class UsedAssetFunctions:
             """,
             user_id,
             asset_id,
-            json.dump(properties),
+            json.dumps(properties),
         )
         return UsedAsset.from_row(res)
 

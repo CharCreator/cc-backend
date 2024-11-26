@@ -1,4 +1,5 @@
 import datetime
+import json
 import logging
 import random
 from fastapi import (
@@ -50,7 +51,7 @@ async def create_used_asset(
         id=used_asset.id,
         user_id=used_asset.user_id,
         asset_id=used_asset.asset_id,
-        properties=used_asset.properties,
+        properties=json.loads(used_asset.properties),
         created_at=used_asset.created_at,
     )
 
