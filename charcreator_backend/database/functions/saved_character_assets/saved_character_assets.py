@@ -43,7 +43,7 @@ class SavedCharacterAssetFunctions:
     def __init__(self, conn):
         self.conn: Connection = conn
 
-    async def create_saved_character_asset(
+    async def create_charasset(
         self, saved_character_id: int, used_asset_id: int
     ) -> SavedCharacterAsset:
         """
@@ -62,7 +62,7 @@ class SavedCharacterAssetFunctions:
         )
         return SavedCharacterAsset.from_row(res)
 
-    async def get_by_id(self, saved_character_asset_id: int) -> typing.Optional[SavedCharacterAssetModel]:
+    async def get_charasset(self, saved_character_asset_id: int) -> typing.Optional[SavedCharacterAssetModel]:
         """
         Retrieve a saved character asset by its ID
         :param saved_character_asset_id: ID of the saved character asset
@@ -76,7 +76,7 @@ class SavedCharacterAssetFunctions:
             raise SavedCharacterAssetNotFound()
         return SavedCharacterAsset.from_row(res).to_model()
 
-    async def get_all_by_saved_character(self, saved_character_id: int) -> typing.List[SavedCharacterAssetModel]:
+    async def get_all_charassets(self, saved_character_id: int) -> typing.List[SavedCharacterAssetModel]:
         """
         Retrieve all saved character assets by saved character ID
         :param saved_character_id: ID of the saved character

@@ -6,7 +6,7 @@ import asyncpg
 from asyncpg import Connection
 
 from ...db_exceptions import DbException
-from ....shared_models import SavedCharacterModel
+from ....shared_models import CharacterModel
 
 
 @dataclasses.dataclass(frozen=True)
@@ -27,7 +27,7 @@ class SavedCharacter:
         )
 
     def to_model(self):
-        return SavedCharacterModel(
+        return CharacterModel(
             id=self.id,
             user_id=self.user_id,
             name=self.name,
@@ -43,7 +43,7 @@ class SavedCharacterFunctions:
     def __init__(self, conn):
         self.conn: Connection = conn
 
-    async def create_saved_character(
+    async def create_character(
         self, user_id: int, name: str
     ) -> SavedCharacter:
         """
@@ -62,7 +62,7 @@ class SavedCharacterFunctions:
         )
         return SavedCharacter.from_row(res)
 
-    async def get_by_id(self, saved_character_id: int) -> typing.Optional[SavedCharacterModel]:
+    async def get_character(self, saved_character_id: int) -> typing.Optional[CharacterModel]:
         """
         Retrieve a saved character by its ID
         :param saved_character_id: ID of the saved character
@@ -76,7 +76,7 @@ class SavedCharacterFunctions:
             raise SavedCharacterNotFound()
         return SavedCharacter.from_row(res).to_model()
 
-    async def get_all_by_user(self, user_id: int) -> typing.List[SavedCharacterModel]:
+    async def get_all_characters(self, user_id: int) -> typing.List[CharacterModel]:
         """
         Retrieve all saved characters by a user
         :param user_id: ID of the user
@@ -88,7 +88,7 @@ class SavedCharacterFunctions:
         )
         return [SavedCharacter.from_row(row).to_model() for row in rows]
 
-    async def update_name(self, saved_character_id: int, name: str) -> SavedCharacterModel:
+    async def update_character(self, saved_character_id: int, name: str) -> CharacterModel:
         """
         Update the name of a saved character
         :param saved_character_id: ID of the saved character
@@ -109,7 +109,7 @@ class SavedCharacterFunctions:
             raise SavedCharacterNotFound()
         return SavedCharacter.from_row(res).to_model()
 
-    async def delete(self, saved_character_id: int):
+    async def delete_character(self, saved_character_id: int):
         """
         Delete a saved character by its ID
         :param saved_character_id: ID of the saved character

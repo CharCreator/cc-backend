@@ -1,7 +1,7 @@
 import pydantic
 
 
-class SavedCharacterModel(pydantic.BaseModel):
+class CharacterModel(pydantic.BaseModel):
     """
     Модель сохранённого персонажа
     """

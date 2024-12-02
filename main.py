@@ -80,11 +80,11 @@ app = fastapi.FastAPI(
             "description": "Модуль использованных ассетов",
         },
         {
-            "name": "Saved Characters",
+            "name": "Characters",
             "description": "Модуль сохраненные персонажей",
         },
         {
-            "name": "Saved Character Assets",
+            "name": "Character Assets",
             "description": "Модуль Saved Character Assets",
         },
     ]
@@ -109,12 +109,12 @@ async def init_modules():
         app, "/used_assets", "used_assets"
     )
 
-    await charcreator_backend.endpoints.saved_characters.init_saved_characters_module(
-        app, "/saved_characters", "saved_characters"
+    await charcreator_backend.endpoints.characters.init_characters_submodule(
+        app, "/characters", "saved_characters"
     )
 
-    await charcreator_backend.endpoints.saved_character_assets.saved_character_assets_init_submodule(
-        app, "/saved_character_assets", "saved_character_assets"
+    await charcreator_backend.endpoints.charassets.charassets_init_submodule(
+        app, "/charassets", "character_assets"
     )
 
 

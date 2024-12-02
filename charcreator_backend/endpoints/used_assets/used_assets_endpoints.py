@@ -25,7 +25,7 @@ fastapi_tags = ["Used Assets"]
 
 
 @router.post(
-    "/used_asset",
+    "/create",
     tags=fastapi_tags,
     name="Create Used Asset",
     description="Create a new used asset",
@@ -57,7 +57,7 @@ async def create_used_asset(
 
 
 @router.get(
-    "/used_asset/{id}",
+    "/{id}",
     tags=fastapi_tags,
     name="Get Used Asset by ID",
     description="Get a used asset by its ID",
@@ -86,7 +86,7 @@ async def get_used_asset_by_id(
 
 
 @router.put(
-    "/used_asset/{id}",
+    "/{id}",
     tags=fastapi_tags,
     name="Update Used Asset",
     description="Update the properties of a used asset",
@@ -114,7 +114,7 @@ async def update_used_asset(
 
 
 @router.delete(
-    "/used_asset/{id}",
+    "/{id}",
     tags=fastapi_tags,
     name="Delete Used Asset",
     description="Delete a used asset by its ID",
