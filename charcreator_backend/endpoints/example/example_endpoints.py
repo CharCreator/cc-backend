@@ -11,7 +11,7 @@ from fastapi import (
     status,
 )
 
-from . import models as example_module_models
+from ...shared_models import UserListResponse
 from ...config import Config
 from ...database import TransactionManager
 
@@ -101,3 +101,20 @@ async def init_submodule(
     logger.info(f"Инициализация модуля {module_name}")
     app.include_router(router, prefix=submodule_path_prefix)
     logger.info(f"Модуль {module_name} инициализирован")
+
+@router.get(
+    "/users",
+    tags=fastapi_tags,
+    name="Get all users",
+    description="Получить список всех пользователей",
+    response_model=shared_models.UserListResponse,
+    status_code=status.HTTP_200_OK,
+)
+async def get_all_users():
+
+    async with TransactionManager() as transaction:
+        user_functions = UserFunctions(transaction.conn)
+        users = await user_functions.get_all_users()
+        user_models = [user.to_model() for user in users]
+
+    return shared_models.UserListResponse(users=user_models)

@@ -12,6 +12,8 @@ from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 
 import charcreator_backend
+import charcreator_backend.endpoints.user_endpoint as user_endpoint
+
 
 tracemalloc.start()
 
@@ -88,10 +90,17 @@ app.add_middleware(
 
 async def init_modules():
     import charcreator_backend.endpoints
+    
 
     await charcreator_backend.endpoints.example.init_submodule(
         app, "/example", "example"
     )
+
+
+from charcreator_backend.endpoints.user_endpoint import init_submodule as user_endpoint_init
+
+async def init_modules():
+    await user_endpoint_init(app, "/users", "user_endpoint")
 
 
 security = HTTPBasic()

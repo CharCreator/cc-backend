@@ -3,6 +3,7 @@ import typing
 import fastapi
 
 
+
 class ErrorModel(pydantic.BaseModel):
     """
     Модель ошибки
@@ -92,3 +93,10 @@ class ExceptionModel(pydantic.BaseModel):
         exception.custom_data = self
         exception.remove_cookies = remove_cookies
         return exception
+
+
+class UserListResponse(pydantic.BaseModel):
+
+    users: typing.List[UserModel] = pydantic.Field(
+        ..., description="Список пользователей", title="Пользователи"
+    )

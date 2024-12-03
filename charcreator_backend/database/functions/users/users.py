@@ -8,6 +8,11 @@ from asyncpg import Connection
 from ...db_exceptions import DbException
 from ....shared_models import UserModel
 
+#Важно! Модифицируйте БД! Добавьте в таблицу users булевую колонку blocked, с дефолтом False. 
+# У меня нет доступа к бд
+# Вот SQL 
+# ALTER TABLE users ADD COLUMN blocked BOOLEAN DEFAULT FALSE;
+ 
 
 @dataclasses.dataclass(frozen=True)
 class User:
@@ -203,3 +208,66 @@ class UserFunctions:
             raise UserNotFound()
 
         return User.from_row(res)
+
+    async def get_all_users(self) -> typing.List[User]:
+      
+        rows = await self.conn.fetch("SELECT * FROM users")
+        return [User.from_row(row) for row in rows]
+
+    ##############################################
+    #Я жестко запутался в структуре, честно говоря
+    ##############################################
+
+    async def block_user(self, user: int | User) -> User:
+        """
+        Block a user by setting 'blocked' to True
+        :param user: int, User - user to block
+        :return: User
+        :raises: UserNotFound
+        """
+        user = user.id if isinstance(user, User) else user
+        res = await self.conn.fetchrow(
+            "UPDATE users SET blocked = TRUE WHERE id = $1 RETURNING *",
+            user,
+        )
+
+        if res is None:
+            raise UserNotFound()
+
+        return User.from_row(res)
+
+    async def unblock_user(self, user: int | User) -> User:
+        """
+        Unblock a user by setting 'blocked' to False
+        :param user: int, User - user to unblock
+        :return: User
+        :raises: UserNotFound
+        """
+        user = user.id if isinstance(user, User) else user
+        res = await self.conn.fetchrow(
+            "UPDATE users SET blocked = FALSE WHERE id = $1 RETURNING *",
+            user,
+        )
+
+        if res is None:
+            raise UserNotFound()
+
+        return User.from_row(res)
+
+    async def is_user_blocked(self, user: int | User) -> bool:
+        """
+        Check if the user is blocked
+        :param user: int, User - user to check
+        :return: bool - True if blocked, False otherwise
+        """
+        user = user.id if isinstance(user, User) else user
+        res = await self.conn.fetchval(
+            "SELECT blocked FROM users WHERE id = $1",
+            user,
+        )
+
+        if res is None:
+            raise UserNotFound()
+
+        return res
+
