@@ -68,6 +68,33 @@ class UsedAssetFunctions:
         )
         return UsedAsset.from_row(res)
 
+    async def update_properties(self, used_asset_id: int, properties: dict) -> UsedAssetModel:
+        """
+        Update the properties of a used asset
+        :param used_asset_id: ID of the used asset
+        :param properties: New properties
+        :return: Updated UsedAssetModel
+        :raises: UsedAssetNotFound
+        """
+
+
+
+        res = await self.conn.fetchrow(
+            """
+            UPDATE used_assets 
+            SET properties = $2 
+            WHERE id = $1 RETURNING *
+            """,
+            used_asset_id,
+            json.dumps(properties),
+        )
+
+        if res is None:
+            raise UsedAssetNotFound()
+
+        return UsedAsset.from_row(res)
+
+
     async def get_by_id(self, used_asset_id: int) -> typing.Optional[UsedAssetModel]:
         """
         Retrieve a used asset by its ID
@@ -80,8 +107,22 @@ class UsedAssetFunctions:
         )
         if res is None:
             raise UsedAssetNotFound()
-        return UsedAsset.from_row(res).to_model()
 
+
+        properties = res['properties']
+        if isinstance(properties, str):
+            properties = json.loads(properties)
+
+
+
+
+        return UsedAsset(
+            id=res['id'],
+            user_id=res['user_id'],
+            asset_id=res['asset_id'],
+            properties=properties,
+            created_at=res['created_at']
+        ).to_model()
     async def get_all_by_user(self, user_id: int) -> typing.List[UsedAssetModel]:
         """
         Retrieve all used assets by a user
@@ -94,26 +135,7 @@ class UsedAssetFunctions:
         )
         return {UsedAsset.from_row(row).to_model() for row in rows}
 
-    async def update_properties(self, used_asset_id: int, properties: dict) -> UsedAssetModel:
-        """
-        Update the properties of a used asset
-        :param used_asset_id: ID of the used asset
-        :param properties: New properties
-        :return: Updated UsedAssetModel
-        :raises: UsedAssetNotFound
-        """
-        res = await self.conn.fetchrow(
-            """
-            UPDATE used_assets 
-            SET properties = $2 
-            WHERE id = $1 RETURNING *
-            """,
-            used_asset_id,
-            properties,
-        )
-        if res is None:
-            raise UsedAssetNotFound()
-        return UsedAsset.from_row(res).to_model()
+
 
     async def delete(self, used_asset_id: int):
         """

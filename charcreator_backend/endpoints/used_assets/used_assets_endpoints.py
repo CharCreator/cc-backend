@@ -108,7 +108,7 @@ async def update_used_asset(
         id=updated_asset.id,
         user_id=updated_asset.user_id,
         asset_id=updated_asset.asset_id,
-        properties=updated_asset.properties,
+        properties=json.loads(updated_asset.properties),
         created_at=updated_asset.created_at,
     )
 

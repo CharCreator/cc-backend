@@ -1,5 +1,6 @@
 import pydantic
 import typing
+import datetime
 
 
 
@@ -16,8 +17,8 @@ class UsedAssetModel(pydantic.BaseModel):
         description="Свойства ассета в формате JSON",
         title="Свойства ассета"
     )
-    created_at: str = pydantic.Field(
+    created_at: datetime.datetime = pydantic.Field(
         ...,
-        description="Дата и время создания записи в ISO 8601 формате",
-        title="Дата создания"
+        description="Дата и время создания записи",
+        title="Дата создания",
     )
