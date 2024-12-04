@@ -106,6 +106,31 @@ async def get_all_charassets(
         for asset in character_assets
     ]
 
+@router.put(
+    "/{id}",
+    tags=fastapi_tags,
+    name="Update  Charsset",
+    description="Update the properties of a char asset",
+    response_model=GetCharAssetResponse,
+)
+async def update_charasset(
+        id: int,
+        request: ModifyCharAssetRequest = Body(...),
+):
+    """
+    Update a used asset's properties
+    """
+    async with TransactionManager() as transaction:
+        updated_asset = await transaction.functions.saved_character_assets.update(
+            id, request.used_asset_id
+        )
+
+    return GetCharAssetResponse(
+            id=updated_asset.id,
+            saved_character_id=updated_asset.saved_character_id,
+            used_asset_id=updated_asset.used_asset_id,
+            created_at=updated_asset.created_at,
+        )
 
 @router.delete(
     "/{charasset_id}",

@@ -7,7 +7,10 @@ import tracemalloc
 import fastapi
 from fastapi import status
 import fastapi.exceptions
+from uuid import UUID
+from enum import Enum
 import fastapi.responses
+from sqlalchemy.dialects.postgresql import JSONB
 from fastapi.security import HTTPBasic, HTTPBasicCredentials
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -89,6 +92,7 @@ app = fastapi.FastAPI(
         },
     ]
 )
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],  # Allows all origins
@@ -100,10 +104,13 @@ app.add_middleware(
 
 async def init_modules():
     import charcreator_backend.endpoints
+    import charcreator_backend.admin_panels
 
     await charcreator_backend.endpoints.example.init_submodule(
         app, "/example", "example"
     )
+
+    await charcreator_backend.admin_panels.init(app)    
 
     await charcreator_backend.endpoints.used_assets.asset_init_submodule(
         app, "/used_assets", "used_assets"

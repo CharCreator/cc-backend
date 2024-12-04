@@ -88,6 +88,27 @@ class SavedCharacterAssetFunctions:
         )
         return [SavedCharacterAsset.from_row(row).to_model() for row in rows]
 
+    async def update(self, charasset_id: int, used_asset_id: int) -> SavedCharacterAssetModel:
+        """
+        Update the properties of a char asset
+        :param charasset_id: ID of the charassets asset
+        :param properties: New properties
+        :return: Updated SavedCharacterAssetModel
+        :raises: SavedCharacterAssetNotFound
+        """
+        res = await self.conn.fetchrow(
+            """
+            UPDATE saved_character_assets 
+            SET used_asset_id = $2 
+            WHERE id = $1 RETURNING *
+            """,
+            charasset_id,
+            used_asset_id,
+        )
+        if res is None:
+            raise SavedCharacterAssetModel()
+        return SavedCharacterAssetModel.from_row(res).to_model()
+
     async def delete(self, saved_character_asset_id: int):
         """
         Delete a saved character asset by its ID

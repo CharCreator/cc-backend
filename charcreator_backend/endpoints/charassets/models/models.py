@@ -1,5 +1,6 @@
 import datetime
 import pydantic
+import typing
 
 
 class GetAllAssetsRequest(pydantic.BaseModel):
